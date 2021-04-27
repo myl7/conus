@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "conus"
+version = "0.1.0"
+description = ""
+authors = ["myl7 <myl@myl.moe>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+Django = "^3.2"
+requests = "^2.25.1"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
