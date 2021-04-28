@@ -20,7 +20,7 @@ def login_view(request):
         })
         return redirect(url)
     else:
-        return redirect(reverse('user:detail'))
+        return redirect(reverse('notice:list_recv'))
 
 
 def _validate_ticket(ticket):
@@ -55,7 +55,7 @@ def validate_view(request):
         if not re.match(r'^[A-Z]{2}[0-9]{8}$', uid):
             user.user_permissions.add('notice.add_notice')
     login(request, user)
-    return redirect(reverse('user:detail'))
+    return redirect(reverse('notice:list_recv'))
 
 
 def logout_view(request):
