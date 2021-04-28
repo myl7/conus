@@ -35,7 +35,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'user.apps.UserConfig'
+    'crispy_forms',
+    'crispy_bootstrap5',
+    'user.apps.UserConfig',
+    'notice.apps.NoticeConfig'
 ]
 
 MIDDLEWARE = [
@@ -118,6 +121,11 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_URL = '/user/login/'
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
 USTC_CAS_LOGIN_URL = 'https://passport.ustc.edu.cn/login'
 USTC_CAS_LOGOUT_URL = 'https://passport.ustc.edu.cn/logout'

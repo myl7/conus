@@ -1,4 +1,5 @@
 import uuid
+import re
 from urllib.parse import urlencode
 from xml.etree import ElementTree
 
@@ -51,6 +52,8 @@ def validate_view(request):
     except User.DoesNotExist:
         user = User.objects.create_user(username=uid, password=uuid.uuid4().hex)
         UstcCasCredential.objects.create(user=user, gid=gid)
+        if not re.match(r'^[A-Z]{2}[0-9]{8}$', uid):
+            user.user_permissions.add('notice.add_notice')
     login(request, user)
     return redirect(reverse('user:detail'))
 
