@@ -4,17 +4,22 @@ from django.urls import reverse_lazy
 
 from . import forms
 from .models import Notice
+from .tasks.email import notify_email
 
 
 class NoticeCreateView(PermissionRequiredMixin, CreateView):
     form_class = forms.NoticeCreateForm
     template_name = 'notice/notice_create.html'
     permission_required = 'notice.add_notice'
-    success_url = reverse_lazy('user:detail')
+    success_url = reverse_lazy('notice:list_send')
 
     def form_valid(self, form):
         form.instance.from_user = self.request.user
-        return super().form_valid(form)
+        res = super().form_valid(form)
+        notify_email.delay([
+            (user.contactinfo.email, user.first_name) for user in form.instance.to_users.all()
+        ], form.instance.title, form.instance.body)
+        return res
 
 
 class NoticeSendListView(PermissionRequiredMixin, ListView):

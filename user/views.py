@@ -50,7 +50,7 @@ def validate_view(request):
     try:
         user = User.objects.get(username=uid)
     except User.DoesNotExist:
-        user = User.objects.create_user(username=uid, password=uuid.uuid4().hex)
+        user = User.objects.create_user(username=uid, password=uuid.uuid4().hex, first_name=uid)
         UstcCasCredential.objects.create(user=user, gid=gid)
         if not re.match(r'^[A-Z]{2}[0-9]{8}$', uid):
             user.user_permissions.add('notice.add_notice')
