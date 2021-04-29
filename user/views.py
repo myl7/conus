@@ -2,12 +2,15 @@ import uuid
 import re
 from urllib.parse import urlencode
 from xml.etree import ElementTree
+import json
 
 from django.shortcuts import redirect, reverse
 from django.conf import settings
 from django.http.response import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
+from django.core.cache import cache
 import requests
 
 from .models import UstcCasCredential
@@ -61,3 +64,20 @@ def validate_view(request):
 def logout_view(request):
     logout(request)
     return redirect(settings.USTC_CAS_LOGOUT_URL)
+
+
+@login_required
+def validate_email_view(request):
+    error = '验证邮箱失败，请重试'
+    token = request.GET.get('token', None)
+    if not token:
+        return HttpResponse(error, status=400)
+    key = f'user:{request.user.pk}:validate_email'
+    email = json.loads(cache.get(key)).get(token, None)
+    if not email:
+        return HttpResponse(error, status=400)
+    contact_info = request.user.contactinfo
+    contact_info.email = email
+    contact_info.save()
+    cache.delete(key)
+    return redirect(reverse('notice:list_recv'))

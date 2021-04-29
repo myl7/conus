@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 
 from . import forms
 from .models import Notice
-from .tasks.email import notify_email
+from .utils.email import notify_email
 
 
 class NoticeCreateView(PermissionRequiredMixin, CreateView):
@@ -16,9 +16,7 @@ class NoticeCreateView(PermissionRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.from_user = self.request.user
         res = super().form_valid(form)
-        notify_email.delay([
-            (user.contactinfo.email, user.first_name) for user in form.instance.to_users.all()
-        ], form.instance.title, form.instance.body)
+        notify_email(form.instance.to_users.all(), form.instance)
         return res
 
 
