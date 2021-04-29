@@ -1,9 +1,6 @@
 from django import forms
+from django.core.validators import EmailValidator
 
-from .models import ContactInfo
 
-
-class ContactInfoUpdateForm(forms.ModelForm):
-    class Meta:
-        model = ContactInfo
-        exclude = []
+class ContactInfoUpdateEmailForm(forms.Form):
+    email = forms.CharField(max_length=120, validators=[EmailValidator(allowlist=[])])

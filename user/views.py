@@ -11,9 +11,14 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.cache import cache
+from django.views.generic import FormView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
 import requests
 
 from .models import UstcCasCredential
+from . import forms
+from .utils.email import validate_email
 
 
 def login_view(request):
@@ -81,3 +86,13 @@ def validate_email_view(request):
     contact_info.save()
     cache.delete(key)
     return redirect(reverse('notice:list_recv'))
+
+
+class ContactInfoUpdateEmailView(LoginRequiredMixin, FormView):
+    form_class = forms.ContactInfoUpdateEmailForm
+    template_name = 'user/update_email.html'
+    success_url = reverse_lazy('user:update_email')
+
+    def form_valid(self, form):
+        validate_email(self.request.user, form.cleaned_data['email'])
+        return super().form_valid(form)
