@@ -1,3 +1,4 @@
+# Not used
 from celery import Celery
 
 app = Celery('conus')

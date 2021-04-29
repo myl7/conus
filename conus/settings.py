@@ -132,14 +132,7 @@ LOGIN_URL = '/user/login/'
 CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
-CELERY_BROKER_URL = 'amqp://guest@localhost//'
-
-EMAIL_FROM_ADDR = 'conus-notify@noreply.myl.moe'
-EMAIL_FROM_NAME = 'conus 通知推送'
-EMAIL_SMTP_HOST = 'smtp.mailgun.org'
-EMAIL_SMTP_PORT = 587
-EMAIL_SMTP_USERNAME = 'conus-notify@noreply.myl.moe'
-EMAIL_SMTP_PASSWORD = os.getenv('EMAIL_SMTP_PASSWORD')
+# CELERY_BROKER_URL = 'amqp://guest@localhost//'
 
 USTC_CAS_LOGIN_URL = 'https://passport.ustc.edu.cn/login'
 USTC_CAS_LOGOUT_URL = 'https://passport.ustc.edu.cn/logout'
